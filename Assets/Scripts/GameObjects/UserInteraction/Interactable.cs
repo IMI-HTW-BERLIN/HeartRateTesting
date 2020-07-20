@@ -4,10 +4,15 @@ namespace GameObjects.UserInteraction
 {
     public abstract class Interactable : MonoBehaviour
     {
-        [SerializeField] private Activatable activatable;
+        [SerializeField] protected Activatable activatable;
 
-
-        public abstract void Interact();
+        [ExecuteAlways]
+        public void Interact()
+        {
+            OnInteract();
+        }
+        
+        protected abstract void OnInteract();
 
     }
 }

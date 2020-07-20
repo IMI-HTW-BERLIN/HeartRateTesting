@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Player
@@ -7,20 +8,26 @@ namespace Player
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private Camera playerCamera;
-        [SerializeField] private float movementSensitivity;
+        [Header("Movement")] [SerializeField] private float movementSensitivity;
+        [SerializeField] private float maxSpeed;
         [SerializeField] private float mouseSensitivity;
         [SerializeField] private float gravityValue;
-        [SerializeField] private float jumpHeight;
-        
+        [Header("Jumping")] [SerializeField] private float jumpHeight;
+        [SerializeField] private Transform groundChecker;
+        [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private float groundDistance;
+        [SerializeField] private float jumpCooldown;
+
         private PlayerInputActions _inputActions;
+        private Rigidbody _rb;
 
         private float _xRotation;
-
         private Vector3 _movementInput;
-
         private float _horizontalMovement;
 
-        private Rigidbody _rb;
+        private bool _canJump;
+        private float _lastJumpTime;
+
 
         private void Awake()
         {
@@ -43,10 +50,16 @@ namespace Player
         private void FixedUpdate()
         {
             MovePlayer();
+            if (_rb.velocity.magnitude > maxSpeed)
+                _rb.velocity = _rb.velocity.normalized * maxSpeed;
         }
 
         private void OnJumpInput(InputAction.CallbackContext obj)
         {
+            if (!Physics.Raycast(groundChecker.position, Vector3.down, groundDistance, groundLayer) ||
+                Time.unscaledTime - _lastJumpTime < jumpCooldown)
+                return;
+            _lastJumpTime = Time.unscaledTime;
             _rb.AddForce(new Vector3(0, jumpHeight * -gravityValue, 0));
         }
 

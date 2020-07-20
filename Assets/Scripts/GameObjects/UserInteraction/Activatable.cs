@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace GameObjects.UserInteraction
 {
@@ -6,16 +7,18 @@ namespace GameObjects.UserInteraction
     {
         protected bool Activated;
         
+        [ExecuteAlways]
         public void Activate()
         {
-            Activated = true;
             OnActivation();
+            Activated = true;
         }
 
+        [ExecuteAlways]
         public void Deactivate()
         {
-            Activated = false;
             OnDeactivation();
+            Activated = false;
         }
 
         public void Toggle()
