@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Player
@@ -11,7 +10,6 @@ namespace Player
         [Header("Movement")] [SerializeField] private float movementSensitivity;
         [SerializeField] private float maxSpeed;
         [SerializeField] private float mouseSensitivity;
-        [SerializeField] private float gravityValue;
         [Header("Jumping")] [SerializeField] private float jumpHeight;
         [SerializeField] private Transform groundChecker;
         [SerializeField] private LayerMask groundLayer;
@@ -22,6 +20,7 @@ namespace Player
         private Rigidbody _rb;
 
         private float _xRotation;
+        private float _yRotation;
         private Vector3 _movementInput;
         private float _horizontalMovement;
 
@@ -35,16 +34,19 @@ namespace Player
             _inputActions.Player.Move.performed += OnMoveInput;
             _inputActions.Player.Camera.performed += OnCameraInput;
             _inputActions.Player.Jump.performed += OnJumpInput;
-            _inputActions.Enable();
 
             _rb = gameObject.GetComponent<Rigidbody>();
 
             //Cursor.lockState = CursorLockMode.Locked;
         }
 
+        private void OnEnable() => _inputActions.Enable();
+
+        private void OnDisable() => _inputActions.Disable();
+
         private void Update()
         {
-            TurnCamera();
+            TurnPlayer();
         }
 
         private void FixedUpdate()
@@ -60,20 +62,23 @@ namespace Player
                 Time.unscaledTime - _lastJumpTime < jumpCooldown)
                 return;
             _lastJumpTime = Time.unscaledTime;
-            _rb.AddForce(new Vector3(0, jumpHeight * -gravityValue, 0));
+            _rb.AddForce(new Vector3(0, jumpHeight, 0));
         }
 
         private void OnCameraInput(InputAction.CallbackContext obj)
         {
             Vector2 mouseDelta = obj.ReadValue<Vector2>();
-            // Rotate body on Y-Axis
-            gameObject.transform.Rotate(Vector3.up * mouseDelta.x * mouseSensitivity);
-            // Rotate camera on X-Axis
-            float newRotation = _xRotation - mouseDelta.y * mouseSensitivity;
-            _xRotation = Mathf.Clamp(newRotation, -90f, 90f);
+            _xRotation = Mathf.Clamp(_xRotation - mouseDelta.y * mouseSensitivity, -90f, 90f);
+            _yRotation += mouseDelta.x * mouseSensitivity;
         }
 
         private void OnMoveInput(InputAction.CallbackContext obj) => _movementInput = obj.ReadValue<Vector2>();
+
+        private void TurnPlayer()
+        {
+            playerCamera.transform.localRotation = Quaternion.Euler(_xRotation, 0, 0f);
+            gameObject.transform.localRotation = Quaternion.Euler(0, _yRotation, 0f);
+        }
 
         private void MovePlayer()
         {
@@ -81,7 +86,5 @@ namespace Player
             Vector3 movement = (t.right * _movementInput.x + t.forward * _movementInput.y) * movementSensitivity;
             _rb.AddForce(movement);
         }
-
-        private void TurnCamera() => playerCamera.transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
     }
 }

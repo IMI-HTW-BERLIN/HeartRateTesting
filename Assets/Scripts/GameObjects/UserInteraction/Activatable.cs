@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 
 namespace GameObjects.UserInteraction
 {
-    public abstract class Activatable : MonoBehaviour
+    public abstract class Activatable : TimeScaleObject
     {
         protected bool Activated;
-        
+
         [ExecuteAlways]
         public void Activate()
         {
@@ -23,14 +22,14 @@ namespace GameObjects.UserInteraction
 
         public void Toggle()
         {
-            if(!Activated)
+            if (!Activated)
                 Activate();
             else
                 Deactivate();
         }
 
         protected abstract void OnActivation();
-        
+
         protected abstract void OnDeactivation();
     }
 }

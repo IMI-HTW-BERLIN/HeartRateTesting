@@ -1,5 +1,4 @@
-﻿using System;
-using GameObjects.UserInteraction;
+﻿using GameObjects.UserInteraction;
 using UnityEngine;
 
 namespace GameObjects
@@ -10,15 +9,19 @@ namespace GameObjects
         [SerializeField] private Vector3 startScale;
         [SerializeField] private Vector3 endScale;
         [SerializeField] private float scaleAnimationTime;
-        
+
         private float _animationTime;
         private bool _isBeingPressed;
 
-        private void Update()
+        protected override void TimeScaledUpdate(float timeScaledDeltaTime)
         {
             toBeScaled.transform.localScale = Vector3.Lerp(startScale, endScale, _animationTime);
-            _animationTime += (_isBeingPressed ? 1 : -1) * Time.deltaTime / scaleAnimationTime;
+            _animationTime += (_isBeingPressed ? 1 : -1) / scaleAnimationTime * timeScaledDeltaTime;
             _animationTime = Mathf.Clamp(_animationTime, 0, 1);
+        }
+
+        protected override void TimeScaledFixedUpdate(float timeScaledFixedDeltaTime)
+        {
         }
 
         protected override void OnInteract()

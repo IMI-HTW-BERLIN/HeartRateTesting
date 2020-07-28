@@ -2,7 +2,7 @@
 
 namespace GameObjects.UserInteraction
 {
-    public abstract class Interactable : MonoBehaviour
+    public abstract class Interactable : TimeScaleObject
     {
         [SerializeField] protected Activatable activatable;
 
@@ -11,8 +11,7 @@ namespace GameObjects.UserInteraction
         {
             OnInteract();
         }
-        
-        protected abstract void OnInteract();
 
+        protected abstract void OnInteract();
     }
 }
