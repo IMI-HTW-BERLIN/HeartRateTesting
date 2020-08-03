@@ -16,7 +16,6 @@ namespace Utils
         {
             _capacity = capacity;
             _autoRemove = autoRemove;
-            
         }
 
         public bool Add(T element)
@@ -43,5 +42,12 @@ namespace Utils
         }
 
         public dynamic Max() => _list.Max();
+
+        public bool Equals(List<T> otherList)
+        {
+            return !_list.Where((t, i) => !t.Equals(otherList[i])).Any();
+        }
+
+        public void Clear() => _list.Clear();
     }
 }

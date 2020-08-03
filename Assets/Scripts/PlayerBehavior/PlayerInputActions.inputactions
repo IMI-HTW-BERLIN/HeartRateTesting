@@ -1,0 +1,146 @@
+{
+    "name": "PlayerInputActions",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "d9344820-9944-40ca-928a-e7de95c10d3f",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "PassThrough",
+                    "id": "e4a07b27-2ff8-4a0f-9b6b-09aa12415c43",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Camera",
+                    "type": "PassThrough",
+                    "id": "b2c5b681-b55b-483d-a982-01ef4f6c43e8",
+                    "expectedControlType": "Vector2",
+                  "processors": "",
+                  "interactions": ""
+                },
+              {
+                "name": "Jump",
+                "type": "Button",
+                "id": "b9409ad1-0153-4274-a468-b898fc1a0455",
+                "expectedControlType": "Button",
+                "processors": "",
+                "interactions": ""
+              },
+              {
+                "name": "Interact",
+                "type": "Button",
+                "id": "6ee6ef25-d4aa-4312-a0d5-83ed09e276d6",
+                "expectedControlType": "Button",
+                "processors": "",
+                "interactions": ""
+              }
+            ],
+            "bindings": [
+                {
+                    "name": "WASD",
+                    "id": "ed11dd06-9ce9-4394-adac-f01f81d3fe9c",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "f30f1567-6014-486e-bbda-593b86b78a40",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "3e0261be-a62e-4c98-9723-11126ee3e612",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "5d23bcab-57de-4ae3-844f-900f24d3d7e1",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "f00749d0-08f6-4ef6-850b-1d8491cc4710",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "20245705-0842-4be8-ac7a-17422fac47d8",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+              {
+                "name": "",
+                "id": "4812b48e-893d-480c-8124-73cd00a50d41",
+                "path": "<Keyboard>/space",
+                "interactions": "",
+                "processors": "",
+                "groups": "Keyboard",
+                "action": "Jump",
+                "isComposite": false,
+                "isPartOfComposite": false
+              },
+              {
+                "name": "",
+                "id": "d0bdda3f-c9ff-4c8e-8c73-e539889df404",
+                "path": "<Keyboard>/e",
+                "interactions": "",
+                "processors": "",
+                "groups": "Keyboard",
+                "action": "Interact",
+                "isComposite": false,
+                "isPartOfComposite": false
+              }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Keyboard",
+            "bindingGroup": "Keyboard",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

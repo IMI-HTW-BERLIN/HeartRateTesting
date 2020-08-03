@@ -15,6 +15,7 @@ namespace Managers
         [SerializeField] private float minDeltaForSlowMotion;
 
         public float TimeScale { get; private set; } = 1f;
+        public PlayerBehavior.Player Player { get; private set; }
 
         private void OnEnable()
         {
@@ -40,6 +41,15 @@ namespace Managers
             float newTimeScale = heartRateDelta < minDeltaForSlowMotion ? slowMotionTimeScale : 1f;
 
             TimeScale = newTimeScale;
+        }
+
+        public bool PlayerInReach(Vector3 position, float maxDistance)
+        {
+            Player = Player ? Player : FindObjectOfType<PlayerBehavior.Player>();
+            if (!Player)
+                throw new Exception("There is no player in the current scene.");
+
+            return Vector3.Distance(Player.transform.position, position) <= maxDistance;
         }
     }
 }

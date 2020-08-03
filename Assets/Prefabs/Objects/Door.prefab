@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5608657945163486606}
-  - component: {fileID: 4995246686069337230}
+  - component: {fileID: 2423681691596214799}
+  - component: {fileID: 7634752668474030994}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4995246686069337230
+--- !u!114 &2423681691596214799
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,15 +42,46 @@ MonoBehaviour:
   m_GameObject: {fileID: 303216456649421296}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5199ffa6478b48178fccb7133d7cedb5, type: 3}
+  m_Script: {fileID: 11500000, guid: 2266cc70b17a4f25aa64c5f1e00da2ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startScale: {x: 1, y: 1, z: 1}
-  endScale: {x: 0.75, y: 1, z: 1}
-  scaleAnimationTime: 1
-  startPosition: {x: 19, y: 1, z: -3}
-  endPosition: {x: 19.125, y: 5.5, z: -3}
-  moveAnimationTime: 2
+  animator: {fileID: 7634752668474030994}
+--- !u!114 &7634752668474030994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303216456649421296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a161c232184484b923659aa955063d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationData:
+  - animatePosition: 1
+    positionFrom: {x: 19, y: 1, z: -3}
+    positionTo: {x: 19.125, y: 1, z: -3}
+    animateScale: 1
+    scaleFrom: {x: 1, y: 1, z: 1}
+    scaleTo: {x: 0.75, y: 1, z: 1}
+    animateRotation: 0
+    rotationFrom: {x: 0, y: 0, z: 0}
+    rotationTo: {x: 0, y: 0, z: 0}
+    animationTime: 1
+  - animatePosition: 1
+    positionFrom: {x: 19.125, y: 1, z: -3}
+    positionTo: {x: 19.125, y: 5.5, z: -3}
+    animateScale: 0
+    scaleFrom: {x: 0, y: 0, z: 0}
+    scaleTo: {x: 0, y: 0, z: 0}
+    animateRotation: 0
+    rotationFrom: {x: 0, y: 0, z: 0}
+    rotationTo: {x: 0, y: 0, z: 0}
+    animationTime: 2
+  animateForward: 0
+  _animationProgress: 0
+  _totalAnimationTime: 0
 --- !u!1 &4759975770981163348
 GameObject:
   m_ObjectHideFlags: 0
