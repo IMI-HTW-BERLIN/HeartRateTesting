@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using UnityEditor;
 
@@ -53,7 +52,7 @@ namespace Utils
             string pathToFile = $"{_path + _fileName}.cs";
 
             _writer = new StreamWriter(pathToFile, false, Encoding.UTF8);
-            
+
             if (addNameSpace)
                 _nameSpace = Directory.Exists(_path)
                     ? new DirectoryInfo(_path).Name
@@ -75,14 +74,15 @@ namespace Utils
             // Reload/Compile written file, allowing other classes to use it.
             AssetDatabase.Refresh();
         }
-        
+
         /// <summary>
         /// Generates multiple enums within a class.
         /// </summary>
         /// <param name="listOfEnumEntries">List of lists of strings to be written to the file.</param>
         /// <param name="className">The name of the class.</param>
         /// <param name="enumNames">The names of the enums. Make sure they are correctly ordered.</param>
-        public void GenerateEnums(IEnumerable<IEnumerable<string>> listOfEnumEntries, string className, string[] enumNames)
+        public void GenerateEnums(IEnumerable<IEnumerable<string>> listOfEnumEntries, string className,
+            string[] enumNames)
         {
             WriteDataToFile(listOfEnumEntries, className, enumNames);
             // Close all brackets that are still open.
@@ -109,7 +109,8 @@ namespace Utils
         /// <param name="listOfEnumEntries">List of lists of strings to be written to the file.</param>
         /// <param name="className">The name of the class.</param>
         /// <param name="enumNames">The names of the enums. Make sure they are correctly ordered.</param>
-        private void WriteDataToFile(IEnumerable<IEnumerable<string>> listOfEnumEntries, string className, string[] enumNames)
+        private void WriteDataToFile(IEnumerable<IEnumerable<string>> listOfEnumEntries, string className,
+            string[] enumNames)
         {
             AddClass(className);
             int i = 0;
@@ -119,6 +120,7 @@ namespace Utils
                 i++;
             }
         }
+
         private void AddNameSpace(string nameSpace)
         {
             _writer.WriteLine("namespace " + nameSpace);
@@ -128,7 +130,7 @@ namespace Utils
 
         private void AddClass(string className)
         {
-            _writer.WriteLine($"{Tab}public class {className}");
+            _writer.WriteLine($"{Tab}public static class {className}");
             _writer.WriteLine(Tab + "{");
             _tabNumber++;
         }
@@ -154,12 +156,13 @@ namespace Utils
 
         private void FinishWriting()
         {
-            int closings = _tabNumber; 
+            int closings = _tabNumber;
             for (int i = 0; i < closings; i++)
             {
                 _tabNumber--;
                 _writer.WriteLine(Tab + "}");
             }
+
             _writer.Close();
         }
     }

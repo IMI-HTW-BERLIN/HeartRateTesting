@@ -13,11 +13,5 @@ namespace Audio
 
         public string AudioName => audioName;
         public AudioClip AudioClip => audioClip;
-
-        public AudioEnum GetAudioEnum()
-        {
-            Enum.TryParse(audioName, out AudioEnum audioEnum);
-            return audioEnum;
-        }
     }
 }

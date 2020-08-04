@@ -72,9 +72,9 @@ namespace Managers
             {
                 yield return new WaitUntil(() => _lastTimePlayed + 1 / (CurrentHeartRate / 60f) < Time.unscaledTime);
                 _lastTimePlayed = Time.unscaledTime;
-                AudioManager.Instance.PlayAudio(AudioEnum.FirstHeartSound);
+                AudioManager.Instance.PlayAudio(AudioEnum.HeartSound.FirstHeartSound);
                 float rangeFactor = Math.Min(1, 1 - (float) CurrentHeartRate / 120);
-                AudioManager.Instance.PlayAudio(AudioEnum.SecondHeartSound, range.GetInBetween(rangeFactor));
+                AudioManager.Instance.PlayAudio(AudioEnum.HeartSound.SecondHeartSound, range.GetInBetween(rangeFactor));
             }
         }
     }

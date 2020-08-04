@@ -16,11 +16,11 @@ namespace Audio
         protected override void Setup()
         {
             AddList(AudioManager.AudioTypeListName, "Audio Type");
-            //AddPropertyField(AudioType.AudioDataName, 0.8f);
-            AddLabelField(0.2f, "Enum Name");
+            AddLabelField(0.5f, "Unique Audio Type Name");
+            AddPropertyField(AudioType.AudioDataFieldName, 0.5f);
             AddRow();
             AddListField();
-            AddList(AudioType.AudioDataListName, "Audio Data");
+            AddList(AudioType.AudioDataListFieldName, "Audio Data");
             AddListField();
             AddLabelField(0.5f, "Clip");
             AddLabelField(0.5f, "Unique Name");
@@ -36,16 +36,31 @@ namespace Audio
             if (!GUILayout.Button("SAVE")) return;
 
             AudioManager audioManager = (AudioManager) target;
-            HashSet<string> uniqueNames = new HashSet<string>();
-            if (audioManager.AudioTypes.Any(types => types.AudioData.Any(data => !uniqueNames.Add(data.AudioName))))
+            List<HashSet<string>> uniqueLists = new List<HashSet<string>>();
+            HashSet<string> enumNames = new HashSet<string>();
+
+            foreach (AudioType audioType in audioManager.AudioTypes)
             {
-                EditorUtility.DisplayDialog("Warning!",
-                    "All audio names must be UNIQUE!", "OK");
-                return;
+                if (!enumNames.Add(audioType.AudioDataName))
+                {
+                    EditorUtility.DisplayDialog("Warning!",
+                        "All audio type names must be UNIQUE!", "OK");
+                    return;
+                }
+
+                HashSet<string> uniqueNames = new HashSet<string>();
+                if (audioType.AudioData.Any(audioData => !uniqueNames.Add(audioData.AudioName)))
+                {
+                    EditorUtility.DisplayDialog("Warning!",
+                        "All audio names must be UNIQUE!", "OK");
+                    return;
+                }
+
+                uniqueLists.Add(uniqueNames);
             }
 
             EnumGenerator enumGenerator = new EnumGenerator(Path, "AudioEnum");
-            enumGenerator.GenerateEnums(uniqueNames, "AudioEnum");
+            enumGenerator.GenerateEnums(uniqueLists, "AudioEnum", enumNames.ToArray());
         }
     }
 }

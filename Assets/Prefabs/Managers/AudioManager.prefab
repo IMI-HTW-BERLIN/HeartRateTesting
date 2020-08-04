@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9160652573700486798}
   - component: {fileID: 9160652573700486799}
-  - component: {fileID: 9160652573700486796}
+  - component: {fileID: 6460558132928533070}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -128,7 +128,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &9160652573700486796
+--- !u!114 &6460558132928533070
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,9 +141,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioTypes:
-  - audioDataName: 
+  - audioDataName: HeartSound
     audioData:
     - audioName: FirstHeartSound
       audioClip: {fileID: 8300000, guid: d2763cb33ed9e194596b45765dbd9dd2, type: 3}
     - audioName: SecondHeartSound
       audioClip: {fileID: 8300000, guid: d017d8af5ae7409448b78881ab1d740b, type: 3}
+  - audioDataName: Numbers
+    audioData:
+    - audioName: One
+      audioClip: {fileID: 8300000, guid: 5a74ca541f57cdf4a8a327d9f2890066, type: 3}
+    - audioName: Two
+      audioClip: {fileID: 8300000, guid: 41ad1869fd9210f48a4c9813a3048abd, type: 3}
+    - audioName: Three
+      audioClip: {fileID: 8300000, guid: 4a753d53d1d2cce40807a9d8b8ce7a7d, type: 3}
+    - audioName: Four
+      audioClip: {fileID: 8300000, guid: 25ad99ba84c2dd241a26cfdcc7f9fa6a, type: 3}
+    - audioName: Five
+      audioClip: {fileID: 8300000, guid: b70a76b2f3f0e804c908b616dc610b7b, type: 3}
+    - audioName: Six
+      audioClip: {fileID: 8300000, guid: ba6735e0767277543bd93ac971a6379b, type: 3}
+    - audioName: Seven
+      audioClip: {fileID: 8300000, guid: c956bfec78038a740b39c275c05acba3, type: 3}
+    - audioName: Eight
+      audioClip: {fileID: 8300000, guid: 84e3a08b599687e44b97de1b168b64df, type: 3}
+    - audioName: Nine
+      audioClip: {fileID: 8300000, guid: c7abc9873099d9c4685039bbafc5428a, type: 3}
