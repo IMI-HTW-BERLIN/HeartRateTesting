@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using JetBrains.Annotations;
-using Managers;
 using UnityEditor;
-using UnityEditor.PackageManager.Requests;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -55,13 +52,11 @@ namespace Utils
 
             _list.drawElementCallback = (rect, index, active, focused) =>
             {
-                AddFieldsToList(_listNames[0], rect, _list.serializedProperty,
+                AddFieldsToList(_listNames[0], rect, _list.serializedProperty.GetArrayElementAtIndex(index),
                     newRect => DrawElementCallback(newRect, index, _list, 1));
             };
 
-
             _list.drawHeaderCallback = rect => DrawHeaderCallback(rect, 0);
-
             _list.elementHeightCallback = index => ElementHeightCallback(index, _list, 0);
         }
 
@@ -167,6 +162,9 @@ namespace Utils
 
         private void DrawElementCallback(Rect rect, int index, ReorderableList outerReorderableList, int level)
         {
+            if (_listNames.Count <= 1)
+                return;
+
             SerializedProperty outerElement = outerReorderableList.serializedProperty.GetArrayElementAtIndex(index);
             SerializedProperty innerList = outerElement.FindPropertyRelative(_listNames[level]);
 
@@ -217,9 +215,9 @@ namespace Utils
             SerializedProperty outerElement = outerReorderableList.serializedProperty.GetArrayElementAtIndex(index);
             string listKey = outerElement.propertyPath;
 
-            // If not in dictionary, skip.
+            // If not in dictionary, use header-less height.
             if (!_innerListDict.ContainsKey(listKey))
-                return 0;
+                return outerReorderableList.elementHeight + _customHeight[_listNames[level]] * LineHeight;
 
             // Otherwise get reference and size.
             ReorderableList innerReorderableList = _innerListDict[listKey];

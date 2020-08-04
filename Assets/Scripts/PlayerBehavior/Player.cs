@@ -16,9 +16,8 @@ namespace PlayerBehavior
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private float groundDistance;
         [SerializeField] private float jumpCooldown;
-
-        [Header("Interaction")] [SerializeField]
-        private float interactionDistance;
+        [Header("UI Input")] [SerializeField] private GameObject pressButtonUI;
+        [SerializeField] private float offsetAmountToCamera;
 
         private PlayerInputActions _inputActions;
         private Rigidbody _rb;
@@ -69,7 +68,7 @@ namespace PlayerBehavior
                 Time.unscaledTime - _lastJumpTime < jumpCooldown)
                 return;
             _lastJumpTime = Time.unscaledTime;
-            _rb.AddForce(new Vector3(0, jumpHeight, 0));
+            _rb.AddForce(new Vector3(0, jumpHeight * _rb.mass, 0));
         }
 
         private void OnCameraInput(InputAction.CallbackContext obj)
@@ -79,7 +78,8 @@ namespace PlayerBehavior
             _yRotation += mouseDelta.x * mouseSensitivity;
         }
 
-        private void OnMoveInput(InputAction.CallbackContext obj) => _movementInput = obj.ReadValue<Vector2>();
+        private void OnMoveInput(InputAction.CallbackContext obj) =>
+            _movementInput = obj.ReadValue<Vector2>() * _rb.mass;
 
         private void TurnPlayer()
         {
@@ -98,20 +98,32 @@ namespace PlayerBehavior
         {
             Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             Debug.DrawRay(ray.origin, ray.direction, Color.green);
-            if (!Physics.Raycast(ray, out RaycastHit hit))
+            if (Physics.Raycast(ray, out RaycastHit hit))
+                if (hit.collider.TryGetComponent(out Pressable pressable) &&
+                    hit.distance <= pressable.UseDistanceForPlayer)
+                {
+                    _currentPressable = pressable;
+                    _currentPressable.ShowInReach();
+                    ShowPressableButton(_currentPressable.transform.position);
+                    return;
+                }
+
+            if (!_currentPressable)
                 return;
-            if (hit.collider.TryGetComponent(out Pressable pressable) && hit.distance <= pressable.UseDistanceForPlayer)
-            {
-                _currentPressable = pressable;
-                _currentPressable.ShowInReach();
-            }
-            else if (_currentPressable)
-            {
-                _currentPressable.HideInReach();
-                _currentPressable = null;
-            }
+            _currentPressable.HideInReach();
+            _currentPressable = null;
+            HidePressableButton();
         }
 
         private void OnInteract(InputAction.CallbackContext obj) => _currentPressable?.Press();
+
+        private void ShowPressableButton(Vector3 worldPosition)
+        {
+            pressButtonUI.transform.position =
+                worldPosition - (worldPosition - playerCamera.transform.position) * offsetAmountToCamera;
+            pressButtonUI.SetActive(true);
+        }
+
+        private void HidePressableButton() => pressButtonUI.SetActive(false);
     }
 }

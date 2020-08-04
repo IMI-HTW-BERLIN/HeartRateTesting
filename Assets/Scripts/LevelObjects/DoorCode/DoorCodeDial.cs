@@ -25,21 +25,22 @@ namespace LevelObjects.DoorCode
         private bool _canPressButtons = true;
 
         private string _defaultDisplayText;
-        private Regex _regex = new Regex("_");
+        private readonly Regex _regexUnderScore = new Regex("_");
 
         private void Awake()
         {
             foreach (DoorCodeButton doorCodeButton in doorCodeButtons)
-            {
                 doorCodeButton.OnDoorCodeButtonPressed += OnDoorCodeButtonPressed;
-            }
 
             _defaultDisplayText = txtDoorCodeDisplay.text;
         }
 
         private void OnDoorCodeButtonPressed(int buttonNumber)
         {
-            string newDisplayText = _regex.Replace(txtDoorCodeDisplay.text, buttonNumber + " ", 1);
+            if (!_canPressButtons)
+                return;
+
+            string newDisplayText = _regexUnderScore.Replace(txtDoorCodeDisplay.text, buttonNumber + " ", 1);
             txtDoorCodeDisplay.SetText(newDisplayText);
             _displayedNumbers.Add(buttonNumber);
             if (_displayedNumbers.IsFull)
