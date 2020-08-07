@@ -1,43 +1,102 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Audio;
 using UnityEngine;
-using AudioType = Audio.AudioType;
+using UnityEngine.Audio;
 
 namespace Managers
 {
     [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(AudioDataManager))]
     public class AudioManager : Singleton<AudioManager>
     {
-        public static string AudioTypeListName => nameof(audioTypes);
+        [SerializeField] private AudioSource audioSourceHeartRate;
+        [SerializeField] private AudioMixerGroup masterAudioMixerGroup;
+        [SerializeField] private AudioMixerGroup spatialAudioMixerGroup;
 
-        [SerializeField] private List<AudioType> audioTypes = new List<AudioType>();
+        [Header("Time Scale Effects")] [SerializeField]
+        private float timeScalePitchInfluence;
 
-        public List<AudioType> AudioTypes => audioTypes;
-        private AudioSource _audioSource;
+        [SerializeField] private AnimationCurve timeScaleLowPassInfluence;
+        [SerializeField] private float timeScaleSpatialVolumeInfluence;
 
-        private readonly Dictionary<string, AudioData> _audioDict = new Dictionary<string, AudioData>();
+        public enum AudioSourceType { HeartRate, General }
+
+
+        private AudioSource _audioSourceGlobal;
+        private AudioDataManager _audioDataManager;
+
+        private const string MASTER_PITCH = "Master_Pitch";
+        private const string SPATIAL_VOLUME = "Spatial_Volume";
+        private const string SPATIAL_LOWPASS = "Spatial_Lowpass";
+        private const int LOWPASS_MAX = 22000;
+        private const int LOWPASS_MIN = 10;
 
         protected override void Awake()
         {
             base.Awake();
-            _audioSource = GetComponent<AudioSource>();
+            _audioSourceGlobal = GetComponent<AudioSource>();
+            _audioDataManager = GetComponent<AudioDataManager>();
+        }
 
-            foreach (AudioData audioData in audioTypes.SelectMany(audioType => audioType.AudioData))
+        private void Update()
+        {
+            masterAudioMixerGroup.audioMixer.SetFloat(MASTER_PITCH,
+                1 - (1 - GameManager.Instance.TimeScale) * timeScalePitchInfluence);
+            float newLowPassValue = timeScaleLowPassInfluence.Evaluate(GameManager.Instance.TimeScale) * LOWPASS_MAX;
+            spatialAudioMixerGroup.audioMixer.SetFloat(SPATIAL_LOWPASS, newLowPassValue);
+            spatialAudioMixerGroup.audioMixer.SetFloat(SPATIAL_VOLUME,
+                0 - (1 - GameManager.Instance.TimeScale) * timeScaleSpatialVolumeInfluence);
+        }
+
+        public void PlayAudio(Enum audioEnum, float delay,
+            AudioSourceType audioSourceType = AudioSourceType.General)
+        {
+            AudioClip clip = _audioDataManager.GetClip(audioEnum);
+            switch (audioSourceType)
             {
-                _audioDict.Add(audioData.AudioName, audioData);
+                case AudioSourceType.General:
+                    _audioSourceGlobal.clip = clip;
+                    _audioSourceGlobal.PlayDelayed(delay);
+                    break;
+                case AudioSourceType.HeartRate:
+                    audioSourceHeartRate.clip = clip;
+                    audioSourceHeartRate.PlayDelayed(delay);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(audioSourceType), audioSourceType, null);
             }
         }
 
-        public void PlayAudio(Enum audioEnum, float delay)
+        public void PlayAudio(Enum audioEnum, AudioSourceType audioSourceType = AudioSourceType.General)
         {
-            _audioSource.clip = GetClip(audioEnum);
-            _audioSource.PlayDelayed(delay);
+            _audioSourceGlobal.PlayOneShot(_audioDataManager.GetClip(audioEnum));
+            AudioClip clip = _audioDataManager.GetClip(audioEnum);
+            switch (audioSourceType)
+            {
+                case AudioSourceType.General:
+                    _audioSourceGlobal.PlayOneShot(clip);
+                    break;
+                case AudioSourceType.HeartRate:
+                    audioSourceHeartRate.PlayOneShot(clip);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(audioSourceType), audioSourceType, null);
+            }
         }
 
-        public void PlayAudio(Enum audioEnum) => _audioSource.PlayOneShot(GetClip(audioEnum));
+        public AudioClip GetAudioClip(Enum audioEnum) => _audioDataManager.GetClip(audioEnum);
 
-        private AudioClip GetClip(Enum audioEnum) => _audioDict[audioEnum.ToString()].AudioClip;
+        public bool CanPlayAudio(AudioSourceType audioSourceType = AudioSourceType.General)
+        {
+            switch (audioSourceType)
+            {
+                case AudioSourceType.General:
+                    return !_audioSourceGlobal.isPlaying;
+                case AudioSourceType.HeartRate:
+                    return !audioSourceHeartRate.isPlaying;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(audioSourceType), audioSourceType, null);
+            }
+        }
     }
 }

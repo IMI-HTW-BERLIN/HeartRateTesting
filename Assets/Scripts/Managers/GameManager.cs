@@ -14,7 +14,7 @@ namespace Managers
 
         [SerializeField] private float minDeltaForSlowMotion;
 
-        public float TimeScale { get; private set; } = 1f;
+        public float TimeScale = 1f;
         public PlayerBehavior.Player Player { get; private set; }
 
         private void OnEnable()

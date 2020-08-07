@@ -58,30 +58,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01a161c232184484b923659aa955063d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectToAnimate: {fileID: 0}
+  pingPongBack: 0
   animationData:
-  - animatePosition: 1
+  - animationTime: 1
+    animatePosition: 1
     positionFrom: {x: 19, y: 1, z: -3}
     positionTo: {x: 19.125, y: 1, z: -3}
+    useDirection: 0
+    direction: {x: 0, y: 0, z: 0}
     animateScale: 1
     scaleFrom: {x: 1, y: 1, z: 1}
     scaleTo: {x: 0.75, y: 1, z: 1}
     animateRotation: 0
     rotationFrom: {x: 0, y: 0, z: 0}
     rotationTo: {x: 0, y: 0, z: 0}
-    animationTime: 1
-  - animatePosition: 1
+  - animationTime: 2
+    animatePosition: 1
     positionFrom: {x: 19.125, y: 1, z: -3}
     positionTo: {x: 19.125, y: 5.5, z: -3}
+    useDirection: 0
+    direction: {x: 0, y: 0, z: 0}
     animateScale: 0
     scaleFrom: {x: 0, y: 0, z: 0}
     scaleTo: {x: 0, y: 0, z: 0}
     animateRotation: 0
     rotationFrom: {x: 0, y: 0, z: 0}
     rotationTo: {x: 0, y: 0, z: 0}
-    animationTime: 2
-  animateForward: 0
-  _animationProgress: 0
-  _totalAnimationTime: 0
 --- !u!1 &4759975770981163348
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +146,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5e148de6cdf2d164aa3e3f90ce8c852c, type: 2}
+  - {fileID: 2100000, guid: 25a9fb42d361f46ad89221f6d301e96e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -368,7 +371,31 @@ MonoBehaviour:
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
-  m_Colors: []
+  m_Colors:
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
+  - {r: 0, g: 0.122, b: 0.247, a: 1}
   m_UnwrapParameters:
     m_HardAngle: 88
     m_PackMargin: 20
@@ -377,9 +404,49 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_IsSelectable: 1
-  m_SelectedFaces: 
-  m_SelectedEdges: []
-  m_SelectedVertices: 
+  m_SelectedFaces: 0500000000000000020000000400000001000000
+  m_SelectedEdges:
+  - a: 20
+    b: 21
+  - a: 22
+    b: 20
+  - a: 21
+    b: 23
+  - a: 23
+    b: 22
+  - a: 0
+    b: 1
+  - a: 2
+    b: 0
+  - a: 1
+    b: 3
+  - a: 3
+    b: 2
+  - a: 8
+    b: 9
+  - a: 10
+    b: 8
+  - a: 9
+    b: 11
+  - a: 11
+    b: 10
+  - a: 16
+    b: 17
+  - a: 18
+    b: 16
+  - a: 17
+    b: 19
+  - a: 19
+    b: 18
+  - a: 4
+    b: 5
+  - a: 6
+    b: 4
+  - a: 5
+    b: 7
+  - a: 7
+    b: 6
+  m_SelectedVertices: 140000001500000016000000170000000000000001000000020000000300000008000000090000000a0000000b0000001000000011000000120000001300000004000000050000000600000007000000
 --- !u!64 &4285731016554883203
 MeshCollider:
   m_ObjectHideFlags: 0

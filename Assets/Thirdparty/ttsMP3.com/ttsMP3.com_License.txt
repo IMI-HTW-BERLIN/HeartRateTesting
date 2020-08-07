@@ -1,0 +1,4 @@
+A lot of speech-sounds were made using ttsmp3.com
+Very neat website to simply convert text to speech with multiple languages and voices.
+Please check them out at:
+https://ttsmp3.com/
