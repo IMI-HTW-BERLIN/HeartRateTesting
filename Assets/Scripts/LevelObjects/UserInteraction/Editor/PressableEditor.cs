@@ -12,10 +12,6 @@ namespace LevelObjects.UserInteraction.Editor
             Pressable pressable = (Pressable) target;
             if (GUILayout.Button("Press"))
                 pressable.Press();
-            if (GUILayout.Button("ShowInReach"))
-                pressable.ShowInReach();
-            if (GUILayout.Button("HideInReach"))
-                pressable.HideInReach();
         }
     }
 }

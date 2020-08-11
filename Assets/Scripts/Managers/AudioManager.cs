@@ -11,25 +11,19 @@ namespace Managers
     {
         [SerializeField] private AudioSource audioSourceHeartRate;
         [SerializeField] private AudioMixerGroup masterAudioMixerGroup;
+        [SerializeField] private AudioMixerGroup pitchChangeableAudioMixerGroup;
         [SerializeField] private AudioMixerGroup spatialAudioMixerGroup;
 
-        [Header("Time Scale Effects")] [SerializeField]
-        private float timeScalePitchInfluence;
-
-        [SerializeField] private AnimationCurve timeScaleLowPassInfluence;
-        [SerializeField] private float timeScaleSpatialVolumeInfluence;
-
         public enum AudioSourceType { HeartRate, General }
+
+        public enum MixerEffect { PitchChangeablePitch, SpatialVolume, SpatialLowpass }
+
+        public enum MixerGroup { Master, PitchChangeable, Spatial }
 
 
         private AudioSource _audioSourceGlobal;
         private AudioDataManager _audioDataManager;
 
-        private const string MASTER_PITCH = "Master_Pitch";
-        private const string SPATIAL_VOLUME = "Spatial_Volume";
-        private const string SPATIAL_LOWPASS = "Spatial_Lowpass";
-        private const int LOWPASS_MAX = 22000;
-        private const int LOWPASS_MIN = 10;
 
         protected override void Awake()
         {
@@ -40,12 +34,6 @@ namespace Managers
 
         private void Update()
         {
-            masterAudioMixerGroup.audioMixer.SetFloat(MASTER_PITCH,
-                1 - (1 - GameManager.Instance.TimeScale) * timeScalePitchInfluence);
-            float newLowPassValue = timeScaleLowPassInfluence.Evaluate(GameManager.Instance.TimeScale) * LOWPASS_MAX;
-            spatialAudioMixerGroup.audioMixer.SetFloat(SPATIAL_LOWPASS, newLowPassValue);
-            spatialAudioMixerGroup.audioMixer.SetFloat(SPATIAL_VOLUME,
-                0 - (1 - GameManager.Instance.TimeScale) * timeScaleSpatialVolumeInfluence);
         }
 
         public void PlayAudio(Enum audioEnum, float delay,
@@ -85,6 +73,24 @@ namespace Managers
         }
 
         public AudioClip GetAudioClip(Enum audioEnum) => _audioDataManager.GetClip(audioEnum);
+
+        public void ChangeMixerEffect(MixerGroup group, MixerEffect effect, float value)
+        {
+            switch (group)
+            {
+                case MixerGroup.Master:
+                    masterAudioMixerGroup.audioMixer.SetFloat(effect.ToString(), value);
+                    break;
+                case MixerGroup.PitchChangeable:
+                    pitchChangeableAudioMixerGroup.audioMixer.SetFloat(effect.ToString(), value);
+                    break;
+                case MixerGroup.Spatial:
+                    spatialAudioMixerGroup.audioMixer.SetFloat(effect.ToString(), value);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(group), group, null);
+            }
+        }
 
         public bool CanPlayAudio(AudioSourceType audioSourceType = AudioSourceType.General)
         {

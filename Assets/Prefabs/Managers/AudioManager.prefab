@@ -271,33 +271,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSourceHeartRate: {fileID: 2824826716515013719}
   masterAudioMixerGroup: {fileID: 24300002, guid: 97b2afa534c164041bbe398b9e3fddec, type: 2}
+  pitchChangeableAudioMixerGroup: {fileID: -528902866099418281, guid: 97b2afa534c164041bbe398b9e3fddec, type: 2}
   spatialAudioMixerGroup: {fileID: 8096903987154891219, guid: 97b2afa534c164041bbe398b9e3fddec, type: 2}
-  timeScalePitchInfluence: 0.3
-  timeScaleLowPassInfluence:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 3.0717568
-      outSlope: 3.0717568
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.023210824
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  timeScaleSpatialVolumeInfluence: 20
 --- !u!114 &4054547234734928130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,3 +352,9 @@ MonoBehaviour:
       audioClip: {fileID: 8300000, guid: ecb05727692b62e45bdcc4f3d22851ce, type: 3}
     - audioName: TomatoSauce
       audioClip: {fileID: 8300000, guid: ac6dd3fec431c724282862791dd531a8, type: 3}
+  - audioDataName: SlowMotionSounds
+    audioData:
+    - audioName: SlowDownTime
+      audioClip: {fileID: 8300000, guid: 9090a2586ddec4347baa607b8d882772, type: 3}
+    - audioName: SpeedUpTime
+      audioClip: {fileID: 8300000, guid: 216c116b974397047ac6305b56485fd4, type: 3}

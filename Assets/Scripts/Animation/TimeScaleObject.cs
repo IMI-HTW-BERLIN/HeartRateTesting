@@ -5,6 +5,13 @@ namespace Animation
 {
     public abstract class TimeScaleObject : MonoBehaviour
     {
+        private bool _slowMotionManagerNotNull;
+
+        private void Awake()
+        {
+            _slowMotionManagerNotNull = SlowMotionManager.Instance != null;
+        }
+
         protected abstract void TimeScaledUpdate(float timeScaledDeltaTime);
 
         protected virtual void TimeScaledFixedUpdate(float timeScaledFixedDeltaTime)
@@ -13,12 +20,14 @@ namespace Animation
 
         protected virtual void Update()
         {
-            TimeScaledUpdate(Time.deltaTime * GameManager.Instance.TimeScale);
+            TimeScaledUpdate(Time.deltaTime *
+                             (_slowMotionManagerNotNull ? SlowMotionManager.Instance.TimeScale : Time.timeScale));
         }
 
         protected virtual void FixedUpdate()
         {
-            TimeScaledFixedUpdate(Time.deltaTime * GameManager.Instance.TimeScale);
+            TimeScaledFixedUpdate(Time.deltaTime *
+                                  (_slowMotionManagerNotNull ? SlowMotionManager.Instance.TimeScale : Time.timeScale));
         }
     }
 }

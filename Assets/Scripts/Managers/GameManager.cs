@@ -1,6 +1,7 @@
-﻿using System;
-using LocalServer;
+﻿using LocalServer;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace Managers
 {
@@ -8,14 +9,11 @@ namespace Managers
     {
         [Header("Mi Band")] [SerializeField] private bool useMiBand;
         [SerializeField] private MiBand2Client miBand2Client;
+        [SerializeField] private Volume postProcessingVolume;
 
-        [Header("Slow Motion")] [SerializeField]
-        private float slowMotionTimeScale;
 
-        [SerializeField] private float minDeltaForSlowMotion;
+        public bool UseMiBand => useMiBand;
 
-        public float TimeScale = 1f;
-        public PlayerBehavior.Player Player { get; private set; }
 
         private void OnEnable()
         {
@@ -29,27 +27,10 @@ namespace Managers
                 miBand2Client.StopMiBand();
         }
 
-        private void Update()
+        public void ChangeDepthOfFieldEffect(float value)
         {
-            if (HeartRateManager.Instance.BaseHeartRate == 0)
-                return;
-
-            float heartRate = HeartRateManager.Instance.CurrentHeartRateAverage;
-            float baseHeartRate = HeartRateManager.Instance.BaseHeartRate;
-            float heartRateDelta = Math.Min(1, heartRate / baseHeartRate);
-
-            float newTimeScale = heartRateDelta < minDeltaForSlowMotion ? slowMotionTimeScale : 1f;
-
-            TimeScale = newTimeScale;
-        }
-
-        public bool PlayerInReach(Vector3 position, float maxDistance)
-        {
-            Player = Player ? Player : FindObjectOfType<PlayerBehavior.Player>();
-            if (!Player)
-                throw new Exception("There is no player in the current scene.");
-
-            return Vector3.Distance(Player.transform.position, position) <= maxDistance;
+            if (postProcessingVolume.profile.TryGet(out DepthOfField depthOfField))
+                depthOfField.focusDistance.value = value;
         }
     }
 }

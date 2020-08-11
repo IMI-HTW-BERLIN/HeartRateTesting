@@ -13,14 +13,16 @@ namespace LocalServer
 {
     public class MiBand2Client : MonoBehaviour
     {
+        [SerializeField] private bool hideWindow = true;
+
         public static event Action<HeartRateResponse> OnHeartRateChange;
         public static event Action<bool> OnDeviceConnectionChange;
-        
+
 
         private TcpClient _client;
         private bool _serverResponseReceived = true;
 
-        private const float ConnectionRetryInterval = 5f;
+        private const float CONNECTION_RETRY_INTERVAL = 5f;
 
         private BinaryWriter _binaryWriter;
 
@@ -44,7 +46,7 @@ namespace LocalServer
 
         private IEnumerator Initialize()
         {
-            BackgroundServer.StartServer();
+            BackgroundServer.StartServer(hideWindow);
             // Short delay for server to start.
             yield return new WaitForSeconds(2);
             StartCoroutine(ConnectToSever());
@@ -52,7 +54,7 @@ namespace LocalServer
             yield return ConnectToBand();
             yield return StartMeasurement();
         }
-        
+
         private IEnumerator ConnectToSever()
         {
             try
@@ -63,15 +65,16 @@ namespace LocalServer
             {
                 StartCoroutine(ConnectToServerAfterDelay());
             }
+
             yield return ListenForResponse();
         }
 
         private IEnumerator ConnectToServerAfterDelay()
         {
-            yield return new WaitForSeconds(ConnectionRetryInterval);
+            yield return new WaitForSeconds(CONNECTION_RETRY_INTERVAL);
             yield return ConnectToSever();
         }
-        
+
         private IEnumerator ConnectToBand()
         {
             SendCommand(Consts.Command.ConnectBand);
@@ -88,16 +91,16 @@ namespace LocalServer
             yield return new WaitUntil(() => _serverResponseReceived);
             _isMeasuring = true;
         }
-        
+
         private void SendCommand(Consts.Command command)
         {
-            if(!_serverResponseReceived)
+            if (!_serverResponseReceived)
                 return;
             _serverResponseReceived = false;
             using (BinaryWriter writer = new BinaryWriter(_client.GetStream(), Encoding.UTF8, true))
                 writer.Write((int) command);
         }
-        
+
         private IEnumerator ListenForResponse()
         {
             using (BinaryReader reader = new BinaryReader(_client.GetStream(), Encoding.UTF8, true))
@@ -105,7 +108,7 @@ namespace LocalServer
                 Task<string> task = reader.ReadStringAsync();
                 yield return new WaitUntil(() => task.IsCompleted);
                 string data = task.Result;
-            
+
                 ServerResponse response = ServerResponse.FromJson(data);
                 switch (response.Data)
                 {
@@ -119,12 +122,14 @@ namespace LocalServer
                                 StartCoroutine(RestartMeasurement());
                             _lastHeartRateWasZero = true;
                         }
+
                         OnHeartRateChange?.Invoke(heartRateResponse);
                         break;
                     case DeviceConnectionResponse connectionResponse:
                         OnDeviceConnectionChange?.Invoke(connectionResponse.IsConnected);
                         break;
                 }
+
                 _serverResponseReceived = true;
                 yield return ListenForResponse();
             }
@@ -137,6 +142,5 @@ namespace LocalServer
             SendCommand(Consts.Command.StartMeasurement);
             yield return new WaitUntil(() => _serverResponseReceived);
         }
-        
     }
 }

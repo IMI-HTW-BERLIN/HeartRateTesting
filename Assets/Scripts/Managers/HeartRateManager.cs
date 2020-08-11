@@ -10,8 +10,7 @@ namespace Managers
 {
     public class HeartRateManager : Singleton<HeartRateManager>
     {
-        [SerializeField] private bool useFakeHeartRate;
-        [SerializeField] [Range(0, 140)] private int fakeHeartRate;
+        [Range(0, 160)] [SerializeField] private int heartRate;
 
         /// <summary>
         /// The base heart rate is the players "normal" heart rate.
@@ -19,8 +18,10 @@ namespace Managers
         /// </summary>
         public int BaseHeartRate { get; private set; }
 
-        public int CurrentHeartRate { get; private set; }
-        public int CurrentHeartRateAverage { get; private set; }
+        public float CurrentHeartRateDelta { get; private set; } = 1;
+        private int CurrentHeartRate { get; set; }
+        private int CurrentHeartRateAverage { get; set; }
+
 
         private readonly LimitedList<int> _heartRates = new LimitedList<int>(10);
 
@@ -28,23 +29,29 @@ namespace Managers
 
         private void OnEnable()
         {
-            if (!useFakeHeartRate)
-                MiBand2Client.OnHeartRateChange += OnHeartRateChange;
-            else
-            {
-                InvokeRepeating(nameof(OnFakeHeartRate), 0, 2f);
-            }
+            MiBand2Client.OnHeartRateChange += OnHeartRateChange;
         }
-
-        private void OnFakeHeartRate() => OnHeartRateChange(new HeartRateResponse(fakeHeartRate, false, 0));
 
         private void OnDisable()
         {
-            if (!useFakeHeartRate)
-                MiBand2Client.OnHeartRateChange -= OnHeartRateChange;
+            MiBand2Client.OnHeartRateChange -= OnHeartRateChange;
         }
 
         private void Start() => StartCoroutine(StartPlayingHeartSound());
+
+        private void Update()
+        {
+            CurrentHeartRateDelta = 1;
+            if (GameManager.Instance.UseMiBand && Instance.BaseHeartRate != 0)
+            {
+                float heartRate = Instance.CurrentHeartRateAverage;
+                float baseHeartRate = Instance.BaseHeartRate;
+                CurrentHeartRateDelta = Math.Min(1, heartRate / baseHeartRate);
+            }
+            else if (!GameManager.Instance.UseMiBand)
+                CurrentHeartRateDelta = heartRate / 160f;
+        }
+
 
         private void CalculateBaseHeartRate(int heartRate)
         {

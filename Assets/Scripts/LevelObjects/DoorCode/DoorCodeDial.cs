@@ -15,7 +15,7 @@ namespace LevelObjects.DoorCode
         [SerializeField] private TextMeshProUGUI txtDoorCodeDisplay;
         [SerializeField] private Door door;
         [SerializeField] private float wrongCodeTimer;
-
+        [SerializeField] private Speaker speakerForCodeAudio;
         [SerializeField] private List<DoorCodeButton> doorCodeButtons;
 
         private readonly LimitedList<int> _displayedNumbers = new LimitedList<int>(4);
@@ -82,9 +82,10 @@ namespace LevelObjects.DoorCode
                 yield return new WaitForSeconds(2f);
             }
 
-            AudioManager.Instance.PlayAudio((AudioEnum.Numbers) _doorCode[_currentCodeIndex] - 1);
+            speakerForCodeAudio.PlayAudio(
+                AudioManager.Instance.GetAudioClip((AudioEnum.Numbers) _doorCode[_currentCodeIndex] - 1));
             _currentCodeIndex++;
-            yield return new WaitUntil(() => AudioManager.Instance.CanPlayAudio());
+            yield return new WaitUntil(() => speakerForCodeAudio.CanPlayAudio());
             yield return new WaitForSeconds(0.5f);
             yield return PlayDoorCode();
         }

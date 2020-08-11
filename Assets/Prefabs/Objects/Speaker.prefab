@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 7128542451661881900}
+  playRandomAudio: 1
 --- !u!1 &7128542451661881902
 GameObject:
   m_ObjectHideFlags: 0

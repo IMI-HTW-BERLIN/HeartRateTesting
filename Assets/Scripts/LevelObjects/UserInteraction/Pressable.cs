@@ -19,10 +19,6 @@ namespace LevelObjects.UserInteraction
 
         protected abstract void OnPress();
 
-        protected abstract void OnShowInReach();
-
-        protected abstract void OnHideInReach();
-
         public void Press()
         {
             if (LastPress + pressCooldown > Time.time)
@@ -31,9 +27,5 @@ namespace LevelObjects.UserInteraction
             LastPress = Time.time;
             OnPress();
         }
-
-        public void ShowInReach() => OnShowInReach();
-
-        public void HideInReach() => OnHideInReach();
     }
 }

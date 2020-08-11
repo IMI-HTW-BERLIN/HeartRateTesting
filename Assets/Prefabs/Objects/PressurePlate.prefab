@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 7567120575911690014}
   - component: {fileID: 8586643919328024150}
   - component: {fileID: 5831168043107663941}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: PressurePlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,6 +379,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectToAnimate: {fileID: 3200947104798725714}
   pingPongBack: 0
+  loop: 0
+  playOnAwake: 0
+  useRigidbody: 0
   animationData:
   - animationTime: 0.5
     animatePosition: 0
@@ -392,6 +395,12 @@ MonoBehaviour:
     animateRotation: 0
     rotationFrom: {x: 0, y: 0, z: 0}
     rotationTo: {x: 0, y: 0, z: 0}
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
 --- !u!1 &3200947105686077388
 GameObject:
   m_ObjectHideFlags: 0

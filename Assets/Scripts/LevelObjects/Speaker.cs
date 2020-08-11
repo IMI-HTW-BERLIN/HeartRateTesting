@@ -9,11 +9,16 @@ namespace LevelObjects
     public class Speaker : MonoBehaviour
     {
         [SerializeField] private AudioSource audioSource;
+        [SerializeField] private bool playRandomAudio;
 
         private void Start()
         {
-            PlayRandomAudio();
+            if (playRandomAudio)
+                PlayRandomAudio();
         }
+
+        public void PlayAudio(AudioClip audioClip) => audioSource.PlayOneShot(audioClip);
+        public bool CanPlayAudio() => !audioSource.isPlaying;
 
         private void PlayRandomAudio()
         {

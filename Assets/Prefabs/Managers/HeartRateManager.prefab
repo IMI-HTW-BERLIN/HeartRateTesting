@@ -43,5 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bab8d41748d4f72997a45bde9c7ad7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useFakeHeartRate: 1
-  fakeHeartRate: 0
+  heartRate: 160

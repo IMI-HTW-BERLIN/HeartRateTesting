@@ -39,5 +39,7 @@
             StolenBible,
             TomatoSauce,
         }
+
+        public enum SlowMotionSounds { SlowDownTime, SpeedUpTime, }
     }
 }

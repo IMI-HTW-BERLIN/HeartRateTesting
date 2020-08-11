@@ -18,13 +18,5 @@ namespace LevelObjects.DoorCode
             OnDoorCodeButtonPressed?.Invoke(doorCodeNumber);
             animator.AnimateForward();
         }
-
-        protected override void OnShowInReach()
-        {
-        }
-
-        protected override void OnHideInReach()
-        {
-        }
     }
 }
