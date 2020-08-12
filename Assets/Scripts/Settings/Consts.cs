@@ -8,6 +8,8 @@ namespace Settings
         {
             public static readonly Color GREEN_CORRECT = new Color(0f, 0.68f, 0f);
             public static readonly Color RED_WRONG = new Color(0.68f, 0f, 0f);
+            public static readonly Color HIGHLIGHT_GREEN = new Color(0f, 0.53f, 0f);
+            public static readonly Color HIGHLIGHT_RED = new Color(0.53f, 0f, 0f);
         }
     }
 }

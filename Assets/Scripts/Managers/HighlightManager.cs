@@ -14,6 +14,11 @@ namespace Managers
         [SerializeField] private Volume postProcessingHighlighting;
         [SerializeField] private AnimationCurve hueHighlightCurve;
 
+        [Header("Respawning")] [SerializeField]
+        private Transform respawnPoint;
+
+        public Transform RespawnPoint => respawnPoint;
+
         private ColorCurves _colorCurves;
         private float _animationProcess;
 
@@ -33,8 +38,8 @@ namespace Managers
                 _colorCurves.hueVsSat.value.MoveKey(i, keyframe);
             }
 
-            _colorCurves.satVsSat.overrideState = true;
-            _colorCurves.satVsSat.value.AddKey(1, 0.5f);
+            // _colorCurves.satVsSat.overrideState = true;
+            // _colorCurves.satVsSat.value.AddKey(1, 0.5f);
         }
 
         private void Update()
@@ -54,8 +59,8 @@ namespace Managers
                             hueChangeAnimationCurve.Evaluate(_animationProcess))));
             }
 
-            _colorCurves.satVsSat.value.MoveKey(0, new Keyframe(1, Mathf.Lerp(0.5f, 1,
-                hueChangeAnimationCurve.Evaluate(_animationProcess))));
+            // _colorCurves.satVsSat.value.MoveKey(0, new Keyframe(1, Mathf.Lerp(0.5f, 1,
+            //     hueChangeAnimationCurve.Evaluate(_animationProcess))));
         }
     }
 }

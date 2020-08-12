@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace LevelObjects
 {
+    [RequireComponent(typeof(Collider))]
     public class PressurePlate : Interactable
     {
         [SerializeField] private CustomAnimator animator;
