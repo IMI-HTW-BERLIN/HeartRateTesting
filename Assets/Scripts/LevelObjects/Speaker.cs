@@ -26,7 +26,7 @@ namespace LevelObjects
             int randomNumber = Random.Range(0, numberOfAudios);
             audioSource.clip = AudioManager.Instance.GetAudioClip((AudioEnum.RandomAudio) randomNumber);
             audioSource.Play();
-            CoroutineManager.Instance.WaitUntil(() => !audioSource.isPlaying, PlayRandomAudio);
+            StartCoroutine(CoroutineManager.WaitUntilCoroutine(() => !audioSource.isPlaying, PlayRandomAudio));
         }
     }
 }

@@ -645,7 +645,7 @@ MonoBehaviour:
   offsetAmountToCamera: 0.1
   rayHitMask:
     serializedVersion: 2
-    m_Bits: 2097175
+    m_Bits: 2097171
 --- !u!143 &8736702694259760436
 CharacterController:
   m_ObjectHideFlags: 0
