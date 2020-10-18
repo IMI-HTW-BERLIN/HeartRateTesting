@@ -7,7 +7,7 @@ namespace Animation
     {
         private bool _slowMotionManagerNotNull;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _slowMotionManagerNotNull = SlowMotionManager.Instance != null;
         }

@@ -20,8 +20,9 @@ namespace Animation
 
         private Rigidbody _rb;
 
-        private void Awake()
+        protected  override void Awake()
         {
+            base.Awake();
             _animateForward = playOnAwake;
             _rb = useRigidbody ? GetComponent<Rigidbody>() : null;
 
